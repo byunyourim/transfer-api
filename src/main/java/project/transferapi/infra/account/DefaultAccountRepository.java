@@ -1,4 +1,4 @@
-package project.transferapi.repository.account;
+package project.transferapi.infra.account;
 
 import com.querydsl.core.ResultTransformer;
 import com.querydsl.core.types.ConstructorExpression;

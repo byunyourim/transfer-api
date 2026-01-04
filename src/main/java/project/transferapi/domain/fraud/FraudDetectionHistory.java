@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import project.transferapi.domain.account.AccountId;
 import project.transferapi.domain.fraud.rule.FraudDetectionRuleId;
 import project.transferapi.domain.transfer.TransferHistoryId;
 
@@ -26,7 +27,7 @@ public class FraudDetectionHistory {
     /* 룰 ID */
     private FraudDetectionRuleId ruleId;
     /* 계좌 ID */
-    private Long accountId;
+    private AccountId accountId;
     /* 탐지 일시 */
     private LocalDateTime detectedAt;
     /* 실제 값 */

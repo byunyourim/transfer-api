@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import project.transferapi.domain.account.AccountId;
 
 @Entity
 @Table( name = "TB_TRANSFER_STATISTICS" )
@@ -18,5 +19,5 @@ public class TransferStatistics {
     @EmbeddedId
     private TransferStatisticsId id;
     /* 계정 ID */
-    private Long accountId;
+    private AccountId accountId;
 }

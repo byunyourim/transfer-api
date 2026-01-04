@@ -9,6 +9,6 @@ import project.transferapi.domain.account.AccountStatus;
 @FieldDefaults( level = AccessLevel.PRIVATE )
 @Getter @Setter
 public class AccountViewRequest {
-    Long owenerId;
+    Long ownerId;
     AccountStatus status;
 }

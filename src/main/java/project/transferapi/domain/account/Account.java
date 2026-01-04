@@ -6,9 +6,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Persistable;
+import project.transferapi.application.ErrorStatus;
+import project.transferapi.application.account.AccountBadRequestException;
 import project.transferapi.application.account.AccountCreateCommand;
+import project.transferapi.domain.Creator;
+import project.transferapi.domain.Modifier;
+import project.transferapi.domain.user.UserId;
 
-import java.time.LocalDateTime;
+
+import static project.transferapi.domain.account.AccountStatus.SUSPENDED;
+import static project.transferapi.domain.account.AccountStatus.TERMINATED;
 
 @Entity
 @Table( name = "TB_ACCOUNTS" )
@@ -21,21 +28,31 @@ public class Account implements Persistable< AccountId > {
     private AccountId id;
     /* 계좌번호 */
     private Long accountNumber;
-    /* 소유자 ID */
-    private Long ownerId;
-    /* 은행코드 */
-    private BankCode code;
+    /* 회원 ID */
+    private UserId userId;
+    /* 은행 코드 */
+    private BankCode bankCode;
     /* 계좌상태 */
     private AccountStatus status;
     /* 잔액 */
     @Column(nullable = false)
     private Long balance;
     /* 1회 이체한도 */
-    @Column
     private Long perTransferLimit;
-    /* 생성일지 */
-    @Column( name = "REG_DT" )
-    private LocalDateTime createdAt;
+    /* 하루 이체한도 */
+    private Long dailyTransferLimit;
+    /* 버전 */
+    private Long version;
+    /* 등록자 */
+    @Embedded
+    private Creator creator;
+    /* 수정자 */
+    @Embedded
+    private Modifier modifier;
+    @Override
+    public boolean isNew() {
+        return false;
+    }
 
     /**
      * 계좌 생성
@@ -43,21 +60,39 @@ public class Account implements Persistable< AccountId > {
      * @param repo 계좌 repository
      * @return Account
      */
-    static Account of( AccountCreateCommand command, AccountRepository repo ) {
+    public static Account of(AccountCreateCommand command, AccountRepository repo ) {
         Account account = new Account();
         account.id = repo.nextId();
-        account.accountNumber = command.accountNumber();
-        account.code = command.code();
-        account.status = command.status();
+        account.accountNumber = generateAccountNumber(command.bankCode());
+        account.userId = command.userId();
+        account.bankCode = command.bankCode();
+        account.status = AccountStatus.ACTIVE;
         account.balance = command.balance();
-        account.createdAt = command.createdAt();
+        account.creator = command.creator();
 
         return account;
     }
 
+    /**
+     * 계좌번호 생성
+     * @param bankCode 은행코드
+     * @return Long
+     */
+    private static Long generateAccountNumber(BankCode bankCode) {
 
-    @Override
-    public boolean isNew() {
-        return false;
+        return 0L;
+    }
+
+    /**
+     * 계좌 정보 변경
+     * @param perTransferLimit 1회 이체한도
+     * @param dailyTransferLimit 하루 이체한도
+     */
+    public void modify(Long perTransferLimit, Long dailyTransferLimit, AccountStatus status) {
+        if (this.status.changeable(status)) {
+            throw new AccountBadRequestException(ErrorStatus.CANNOT_CHANGE_ACCOUNT_INFO, this.status);
+        }
+        this.perTransferLimit = perTransferLimit;
+        this.dailyTransferLimit = dailyTransferLimit;
     }
 }

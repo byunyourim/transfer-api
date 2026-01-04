@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import project.transferapi.domain.account.AccountId;
 
 import java.time.LocalDateTime;
 
@@ -21,7 +22,7 @@ public class TransferStatusHistory {
     /* 이체 ID */
     private TransferId transferId;
     /* 계좌 ID */
-    private Long accountId;
+    private AccountId accountId;
     /* 이체 금액 */
     private Long amount;
     /* 이벤트 유형 */
