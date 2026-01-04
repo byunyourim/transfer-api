@@ -1,4 +1,4 @@
-package project.transfer_api;
+package project.transferapi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
