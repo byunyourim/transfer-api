@@ -1,4 +1,4 @@
-package project.transferapi.domain.member;
+package project.transferapi.domain.stat;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -11,12 +11,12 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @NoArgsConstructor( access = AccessLevel.PROTECTED )
 @AllArgsConstructor( access = AccessLevel.PRIVATE )
-public @Getter class MemberId implements Serializable {
+public @Getter class TransferStatisticsId implements Serializable {
     @Serial
     private static final long serialVersionUID = 4559539098383372659L;
 
-    /* 운영자 ID */
-    @Column( name = "MEMBER_ID" )
+    /* 이체집계 ID */
+    @Column( name = "TRANSFER_STATISTICS_ID" )
     private Long id;
 
     @Override
@@ -25,11 +25,11 @@ public @Getter class MemberId implements Serializable {
     }
 
     /**
-     * 회원 ID 생성
-     * @param id 회원 ID
-     * @return UserId
+     * 이체집계 ID 생성
+     * @param id 이체집계 ID
+     * @return TransferStatisticsId
      */
-    public static MemberId of(Long id ) {
-        return ( id == null || id < 0L ) ? null : new MemberId( id );
+    public static TransferStatisticsId of(Long id ) {
+        return ( id == null || id < 0L ) ? null : new TransferStatisticsId( id );
     }
 }

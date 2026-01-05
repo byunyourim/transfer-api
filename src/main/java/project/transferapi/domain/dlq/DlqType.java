@@ -1,16 +1,15 @@
-package project.transferapi.domain.fraud;
+package project.transferapi.domain.dlq;
 
 import project.transferapi.domain.Code;
 
-public enum DetectionType implements Code {
-    DETECTED("DT01", "탐지됨"),
-    CONFIRMED("DT02", "이상확정"),
-    CLEARED("DT03", "정상처리");
+public enum DlqType implements Code {
+    BUSINESS("DT01", "비즈니스"),
+    SYSTEM("DT02", "시스템");
 
     private final String code;
     private final String name;
 
-    DetectionType(String code, String name) {
+    DlqType(String code, String name) {
         this.code = code;
         this.name = name;
     }
@@ -22,6 +21,6 @@ public enum DetectionType implements Code {
 
     @Override
     public String getName() {
-        return this.name;
+        return name;
     }
 }

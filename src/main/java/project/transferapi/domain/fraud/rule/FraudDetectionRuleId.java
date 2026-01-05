@@ -15,7 +15,7 @@ public @Getter class FraudDetectionRuleId implements Serializable {
     @Serial
     private static final long serialVersionUID = 4559539098383372659L;
 
-    /* 이력 탐지 룰 ID */
+    /* 룰 ID */
     @Column( name = "FRAUD_DETECTION_RULE_ID" )
     private Long id;
 
@@ -25,9 +25,9 @@ public @Getter class FraudDetectionRuleId implements Serializable {
     }
 
     /**
-     * 회원 ID 생성
-     * @param id 회원 ID
-     * @return UserId
+     * 룰 ID 생성
+     * @param id 룰 ID
+     * @return FraudDetectionRuleId
      */
     public static FraudDetectionRuleId of(Long id ) {
         return ( id == null || id < 0L ) ? null : new FraudDetectionRuleId( id );

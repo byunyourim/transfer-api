@@ -1,14 +1,15 @@
-package project.transferapi.domain.member;
+package project.transferapi.domain.ledger;
 
 import project.transferapi.domain.Code;
 
-public enum MemberType implements Code {
-    SYSTEM("MT", "관리자");
+public enum TransferDirection implements Code {
+    IN("TD01", "입금"),
+    OUT("TD02", "출금");
 
     private final String code;
     private final String name;
 
-    MemberType(String code, String name) {
+    TransferDirection(String code, String name) {
         this.code = code;
         this.name = name;
     }

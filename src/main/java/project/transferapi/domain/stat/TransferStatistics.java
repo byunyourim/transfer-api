@@ -1,4 +1,4 @@
-package project.transferapi.domain.fraud;
+package project.transferapi.domain.stat;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -9,12 +9,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table( name = "TB_FRAUD_DETECTION" )
+@Table( name = "TB_TRANSFER_STATISTICS" )
 @NoArgsConstructor( access = AccessLevel.PROTECTED )
 @AllArgsConstructor( access = AccessLevel.PROTECTED )
 @Getter
-public class FraudDetection {
+public class TransferStatistics {
+    /* 이체집계 ID */
     @EmbeddedId
-    private FraudDetectionId id;
-    /*  */
+    private TransferStatisticsId id;
+    /* 계정 ID */
+    private Long accountId;
 }

@@ -1,4 +1,4 @@
-package project.transferapi.domain.account;
+package project.transferapi.domain.event;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -11,12 +11,12 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @NoArgsConstructor( access = AccessLevel.PROTECTED )
 @AllArgsConstructor( access = AccessLevel.PRIVATE )
-public @Getter class AccountHistoryId implements Serializable {
+public @Getter class TransferOutboxEventId implements Serializable {
     @Serial
     private static final long serialVersionUID = 4559539098383372659L;
 
-    /* 계좌 이력 ID */
-    @Column( name = "ACCOUNT_HISTORY_ID" )
+    /* outbox event ID */
+    @Column( name = "TRANSFER_OUTBOX_EVENT_ID" )
     private Long id;
 
     @Override
@@ -25,11 +25,11 @@ public @Getter class AccountHistoryId implements Serializable {
     }
 
     /**
-     * 회원 ID 생성
-     * @param id 회원 ID
-     * @return UserId
+     * outbox event ID 생성
+     * @param id outbox event ID
+     * @return TransferOutboxEventId
      */
-    public static AccountHistoryId of(Long id ) {
-        return ( id == null || id < 0L ) ? null : new AccountHistoryId( id );
+    public static TransferOutboxEventId of(Long id ) {
+        return ( id == null || id < 0L ) ? null : new TransferOutboxEventId( id );
     }
 }

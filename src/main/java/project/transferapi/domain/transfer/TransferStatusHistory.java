@@ -1,4 +1,4 @@
-package project.transferapi.domain.user;
+package project.transferapi.domain.transfer;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -11,18 +11,21 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Table( name = "TB_USER" )
+@Table( name = "TB_TRANSFER_STATUS_HISTORY" )
 @NoArgsConstructor( access = AccessLevel.PROTECTED )
 @AllArgsConstructor( access = AccessLevel.PROTECTED )
 @Getter
-public class User {
-    /* 유저 ID */
+public class TransferStatusHistory {
     @EmbeddedId
-    private UserId id;
-    /* 유저 명 */
-    private String name;
-    /* 유저 상태 */
-    private UserStatus status;
-    /* 생성일시 */
+    private TransferHistoryId id;
+    /* 이체 ID */
+    private TransferId transferId;
+    /* 계좌 ID */
+    private Long accountId;
+    /* 이체 금액 */
+    private Long amount;
+    /* 이벤트 유형 */
+    private TransferEventType eventType;
+    /* 발생 일시 */
     private LocalDateTime createdAt;
 }
