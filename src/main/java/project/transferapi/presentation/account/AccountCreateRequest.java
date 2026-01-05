@@ -8,10 +8,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter @Setter
 public class AccountCreateRequest {
-    /* 소유자 ID */
-    Long userId;
-    /* 잔액 */
+    Long ownerId;
     Long balance;
-    /* 은행코드 */
-    Long bankCode;
+    String bankCode;
 }

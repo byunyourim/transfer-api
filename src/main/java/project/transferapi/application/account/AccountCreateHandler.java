@@ -2,6 +2,8 @@ package project.transferapi.application.account;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import project.transferapi.domain.account.Account;
+import project.transferapi.domain.account.AccountRepository;
 import project.transferapi.domain.account.AccountValidationService;
 
 @Component
@@ -9,20 +11,12 @@ import project.transferapi.domain.account.AccountValidationService;
 public class AccountCreateHandler {
     private final AccountValidationService validationService;
 
+    private final AccountRepository repository;
+
     public void createAccount(AccountCreateCommand command) {
-        // 소유자 ID 검증
-        if (command.ownerId() == null) {
-            throw new ;
-        }
+        // 계좌 정보 검증
+        validationService.validAccountInfo(command);
 
-        // 1회 이체한도
-        if (command.perTransferLimit() <= 0 ) {
-
-        }
-
-        // 하루 이체한도
-        if (command.dailyTransferLimit() <= 0) {
-
-        }
+        Account account = Account.of(command, repository);
     }
 }

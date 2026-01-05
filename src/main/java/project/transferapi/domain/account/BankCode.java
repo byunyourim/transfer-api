@@ -29,11 +29,11 @@ public enum BankCode implements Code {
 
     @Override
     public String getCode() {
-        return this.code;
+        return null;
     }
 
     @Override
     public String getName() {
-        return this.name;
+        return null;
     }
 }

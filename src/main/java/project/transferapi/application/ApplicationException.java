@@ -13,10 +13,6 @@ public abstract class ApplicationException extends RuntimeException {
         this.error = error;
     }
 
-    public ErrorStatus getError() {
-        return error;
-    }
-
     public String getMessage() {
         return getErrorMessage();
     }

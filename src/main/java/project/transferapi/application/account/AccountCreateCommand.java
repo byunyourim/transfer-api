@@ -8,18 +8,8 @@ import java.time.LocalDateTime;
 import java.util.Currency;
 
 public record AccountCreateCommand(
-        /* 계좌 ID */
-        AccountId accountId,
-        /* 계좌 번호 */
-        Long accountNumber,
-        /* 소유자 ID */
-        Long ownerId,
-        /* 금액 */
-        Long amount,
         /* 은행 코드 */
         BankCode code,
-        /* 계좌 상태 */
-        AccountStatus status,
         /* 잔액 */
         Long balance,
         /* 단위 */
@@ -31,6 +21,8 @@ public record AccountCreateCommand(
         /* 생성일자 */
         LocalDateTime createdAt,
         /* 수정일자 */
-        LocalDateTime modifiedAt
+        LocalDateTime modifiedAt,
+        /* 소유자 ID */
+        Long ownerId
 ) {
 }

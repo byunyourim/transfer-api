@@ -1,14 +1,12 @@
 package project.transferapi.presentation.account;
 
 import lombok.RequiredArgsConstructor;
-import org.mapstruct.factory.Mappers;
 import org.springframework.web.bind.annotation.*;
 import project.transferapi.application.account.AccountCreateHandler;
 import project.transferapi.application.account.AccountVeiwHandler;
+import org.mapstruct.factory.Mappers;
 import project.transferapi.application.account.AccountView;
 import project.transferapi.application.account.AccountViewDetail;
-import project.transferapi.domain.Creator;
-import project.transferapi.domain.Modifier;
 
 @RequestMapping("/v1/accounts")
 @RestController
@@ -50,8 +48,8 @@ public class AccountController {
      * @param request 계좌 등록 정보
      */
     @PostMapping
-    void createAccount(@RequestBody AccountCreateRequest request, Creator creator) {
-        createHandler.createAccount(mapper.map(request, creator));
+    void createAccount(@RequestBody AccountCreateRequest request) {
+        createHandler.createAccount(mapper.map(request));
     }
 
     /**
@@ -61,7 +59,7 @@ public class AccountController {
      */
     @PatchMapping("/{id}")
     void modifyAccount(@PathVariable Long id,
-                       @RequestBody AccountModifyRequest request, Modifier modifier) {
-        modifyHandler.modifyAccount(mapper.map(id, request, modifier));
+                       @RequestBody AccountModifyRequest request) {
+        modifyHandler.modifyAccount(mapper.map(id, request));
     }
 }
