@@ -1,4 +1,24 @@
-## 테이블 
+# Transfer-API
+## 개요
+거래 이체시, 이상 징후를 실시간으로 감지하여, 운영자에게 알림 제공
+
+## 테이블
+| 테이블명                | 설명              |
+|---------------------|-----------------| 
+| tb_user             | 회원 정보           |
+| tb_member           | 운영자 정보          |
+| tb_account          | 계좌 정보           |
+| tb_transfer         | 이체              | 
+| tb_transfer_history | 이체 상태 변경 이력     | 
+| tb_transfer_statics | 이체 집계/통계(피처/집계) | 
+| tb_ledger           | 원장 목록           | 
+| tb_fraud_detection  | 이상탐지결과          | 
+| tb_fraud_rule       | 이상탐지룰           | 
+| tb_fraud_action     | 이상탐지조치이력        |
+| tb_transfer_outbox  | 아웃박스 이벤트 큐      |
+| tb_dlq_event        | 실패이벤트           |
+
+
 ### tb_user 유저
 | 컬럼명        | 한글명    | 타입           | 제약       |
 | ---------- | ------ | ------------ | -------- |
