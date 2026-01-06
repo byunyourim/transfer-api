@@ -11,11 +11,11 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @NoArgsConstructor( access = AccessLevel.PROTECTED )
 @AllArgsConstructor( access = AccessLevel.PRIVATE )
-public @Getter class FraudDetectionHistoryId implements Serializable {
+public @Getter class FraudActionHistoryId implements Serializable {
     @Serial
     private static final long serialVersionUID = 4559539098383372659L;
 
-    /* 이상탐지결과 ID */
+    /* 이상탐지조치이력 ID */
     @Column( name = "FRAUD_DETECTOIN_HISTORY_ID" )
     private Long id;
 
@@ -25,11 +25,11 @@ public @Getter class FraudDetectionHistoryId implements Serializable {
     }
 
     /**
-     * 이상탐지결과 ID 생성
-     * @param id 이상탐지결과 ID
-     * @return FraudDetectionHistoryId
+     * 이상탐지조치이력 ID 생성
+     * @param id 이상탐지조치이력 ID
+     * @return FraudActionHistoryId
      */
-    public static FraudDetectionHistoryId of(Long id ) {
-        return ( id == null || id < 0L ) ? null : new FraudDetectionHistoryId( id );
+    public static FraudActionHistoryId of(Long id ) {
+        return ( id == null || id < 0L ) ? null : new FraudActionHistoryId( id );
     }
 }

@@ -7,6 +7,10 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import project.transferapi.domain.stat.TransferStatisticsId;
+import project.transferapi.domain.transfer.TransferId;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table( name = "TB_LEDGER" )
@@ -17,19 +21,20 @@ public class Ledger {
     /* 원장 ID */
     @EmbeddedId
     private LedgerId id;
-    /* 계좌 ID */
-    private Long accountId;
-    /* 증감금액 */
-    private Long deltaAmount;
+    /* 이체 ID */
+    private TransferId transferId;
+    /* 출금 계좌 ID */
+    private Long fromId;
+    /* 송금 계좌 ID */
+    private Long toId;
+    /* 이체 유형 */
+    private TransferDirection direction;
+    /* 금액 */
+    private Long amount;
     /* 변경전 잔액 */
     private Long beforeBalance;
     /* 변경후 잔액 */
     private Long afterBalance;
-    /* 변경 사유 */
-    private LedgerType reason;
-    /* 참조 ID */
     /* 생성일시 */
-    /* 생성일시 */
-
-
+    private LocalDateTime createdAt;
 }

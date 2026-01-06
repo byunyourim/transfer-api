@@ -13,14 +13,14 @@ import project.transferapi.domain.transfer.TransferHistoryId;
 import java.time.LocalDateTime;
 
 @Entity
-@Table( name = "TB_FRAUD_DETECTION_HISTORY" )
+@Table( name = "TB_FRAUD_ACTION_HISTORY" )
 @NoArgsConstructor( access = AccessLevel.PROTECTED )
 @AllArgsConstructor( access = AccessLevel.PROTECTED )
 @Getter
-public class FraudDetectionHistory {
+public class FraudActionHistory {
     /* 이상 탐지 ID */
     @EmbeddedId
-    private FraudDetectionHistoryId id;
+    private FraudActionHistoryId id;
     /* 이체 이력 ID */
     private TransferHistoryId transferHistoryId;
     /* 룰 ID */
@@ -35,4 +35,6 @@ public class FraudDetectionHistory {
     private Long threshold;
     /* 위험 유형 */
     private SeverityType severityType;
+    /* 탐지상태 유형 */
+    private DetectionStatusType detectionStatusType;
 }

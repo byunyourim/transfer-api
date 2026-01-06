@@ -1,138 +1,125 @@
-# Transfer-API
-## 개요
-거래 이체시, 이상 징후를 실시간으로 감지하여, 운영자에게 알림 제공
+# 거래 / 이상탐지 시스템 
 
-## 테이블
-| 테이블명                | 설명              |
-|---------------------|-----------------| 
-| tb_user             | 회원 정보           |
-| tb_member           | 운영자 정보          |
-| tb_account          | 계좌 정보           |
-| tb_transfer         | 이체              | 
-| tb_transfer_history | 이체 상태 변경 이력     | 
-| tb_transfer_statics | 이체 집계/통계(피처/집계) | 
-| tb_ledger           | 원장 목록           | 
-| tb_fraud_detection  | 이상탐지결과          | 
-| tb_fraud_rule       | 이상탐지룰           | 
-| tb_fraud_action     | 이상탐지조치이력        |
-| tb_transfer_outbox  | 아웃박스 이벤트 큐      |
-| tb_dlq_event        | 실패이벤트           |
+---
 
+## 테이블 
+### 유저 (User)
 
-### tb_user 유저
-| 컬럼명        | 한글명    | 타입           | 제약       |
-| ---------- | ------ | ------------ | -------- |
-| user_id    | 사용자 ID | BIGINT       | PK       |
-| name       | 사용자 이름 | VARCHAR(100) | NOT NULL |
-| status     | 사용자 상태 | USER_STATUS  | NOT NULL |
-| created_at | 생성일시   | TIMESTAMP    | NOT NULL |
+| 컬럼명 | 설명 | 비고 |
+|---|---|---|
+| id | 유저 ID | PK |
+| username | 유저명 |  |
+| status | 유저 상태 | ACTIVE / DORMANT / WITHDRAWN |
+| created_at | 등록일시 |  |
+| updated_at | 수정일시 |  |
 
+### 운영자 (Admin)
+| 컬럼명 | 설명 | 비고             |
+|---|---|----------------|
+| id | 운영자 ID | PK             |
+| role | 권한 | SYSTEM / ADMIN |
+| created_at | 등록일시 |                |
+| updated_at | 수정일시 |                |
 
+### 계좌 (Account)
+| 컬럼명 | 설명 | 비고 |
+|---|---|---|
+| id | 계좌 ID | PK |
+| user_id | 소유자 유저 ID | FK |
+| balance | 잔액 | >= 0 (실시간 기준 잔액) |
+| status | 계좌 상태 | ACTIVE / DORMANT / SUSPENDED |
+| daily_transfer_count_limit | 1일 이체 횟수 한도 | >= 0 AND < 1000 |
+| daily_transfer_amount_limit | 하루 이체 금액 한도 | < 100000000 |
+| created_at | 등록일시 |  |
+| updated_at | 수정일시 |  |
+- balance는 최종 정합성의 기준
 
-### tb_member 운영자
-| 컬럼명 | 타입             | 제약                |
-|--| -------------- | ----------------- |
-| member_id | BIGINT       | PK       |
-| member_type | BIGINT       | PK       |
-| created_at  | TIMESTAMP    | NOT NULL |
-| modified_at | TIMESTAMP    | NOT NULL |
+### 이체 (Transfer)
+| 컬럼명 | 설명 | 비고                                                 |
+|---|---|----------------------------------------------------|
+| id | 이체 ID | PK                                                 |
+| from_account_id | 출금 계좌 ID | FK                                                 |
+| to_account_id | 입금 계좌 ID | FK                                                 |
+| amount | 이체 금액 | > 0                                                |
+| direction | 입/출금 구분 | IN/OUT                                |
+| status | 이체 상태 | REQUESTED / COMPLETED / FAILED                     |
+| failure_reason | 실패 사유 | INSUFFICIENT_BALANCE / FRAUD_BLOCKED / SYSTEM_ERROR |
+| requested_at | 이체 요청 일시 |                                                    |
+| completed_at | 이체 완료 일시 | status = COMPLETED                            |
 
-### tb_account 계좌
-| 컬럼명         | 한글명    | 타입             | 제약                |
-|-------------|--------| -------------- | ----------------- |
-| account_id  | 계좌 ID  | BIGINT         | PK                |
-| user_id     | 사용자 ID | BIGINT         | FK → user.user_id |
-| balance     | 잔액     | DECIMAL(15,2)  | NOT NULL          |
-| status      | 계좌 상태  | ACCOUNT_STATUS | NOT NULL          |
-| created_at  | 생성일시   | TIMESTAMP      | NOT NULL          |
-| modified_at | 수정일시   | TIMESTAMP      | NOT NULL          |
+### 원장 (Ledger)
+| 컬럼명 | 설명 | 비고 |
+|---|---|--|
+| id | 원장 ID | PK |
+| transfer_id | 이체 ID | FK |
+| account_id | 계좌 ID | FK |
+| before_balance | 변경 전 금액 | 기록 시점 기준 |
+| after_balance | 변경 후 금액 | 기록 시점 기준 |
+| amount | 변경 금액 |  |
+| type | 원장 타입 | TRANSFER_IN / TRANSFER_OUT / FEE |
+| created_at | 등록일시 |  |
 
+### 이상탐지 룰 (FraudRule)
+| 컬럼명 | 설명 | 비고                        |
+|---|---|---------------------------|
+| id | 룰 ID | PK                        |
+| name | 룰 이름 |                           |
+| rule_type | 룰 유형 | AMOUNT / COUNT / VELOCITY |
+| threshold | 임계값 | 단일 기준                     |
+| min_value | 구간 최소값 | 범위 기준                     |
+| max_value | 구간 최대값 | 범위 기준                     |
+| risk_level | 위험도 | LOW / MEDIUM / HIGH       |
+| enabled | 사용 여부 | true / false              |
+| created_at | 등록일시 |                           |
+| updated_at | 수정일시 |                           |
 
-### tb_account_history 계좌 이력
-| 컬럼명             | 한글명   | 타입             | 제약                      |
-| --------------- | ----- | -------------- | ----------------------- |
-| history_id      | 이력 ID | BIGINT         | PK                      |
-| account_id      | 계좌 ID | BIGINT         | FK → account.account_id |
-| previous_status | 이전 상태 | ACCOUNT_STATUS | NOT NULL                |
-| current_status  | 변경 상태 | ACCOUNT_STATUS | NOT NULL                |
-| reason          | 변경 사유 | VARCHAR(255)   | NOT NULL                |
-| changed_at      | 변경일시  | TIMESTAMP      | NOT NULL                |
+### 탐지 이력 (FraudDetectionHistory)
+| 컬럼명 | 설명 | 비고                   |
+|---|---|----------------------|
+| id | 탐지 이력 ID | PK                   |
+| transfer_id | 이체 ID | FK                   |
+| rule_id | 적용된 룰 ID | FK                   |
+| account_id | 계좌 ID | FK                   |
+| actual_value | 실제 측정값 | 탐지 시점 기준             |
+| threshold_value | 기준값 | threshold or min/max |
+| detection_status | 탐지 상태 | DETECTED / PASSED    |
+| detected_at | 탐지 시각 |                      |
+- 탐지 결과 수정 불가
 
+### 조치 이력 (FraudActionHistory)
+| 컬럼명 | 설명        | 비고                     |
+|---|-----------|------------------------|
+| id | 조치 이력 ID  | PK                     |
+| detection_history_id | 탐지 이력 ID  | FK                     |
+| action_type | 조치 유형     | BLOCK / HOLD / STEP_UP |
+| admin_id | 운영자 ID | FK                     |
+| processed_at | 처리일시      | 실제 조치 시점               |
+| created_at | 등록일시      |                        |
+| updated_at | 수정일시      |                        |
+- 하나의 탐지 결과에 **여러 조치 이력**이 생길 수 있음
 
+### 아웃박스 이벤트 큐 (TransferOutbox)
+| 컬럼명 | 설명 | 비고 |
+|---|---|---|
+| id | 이벤트 ID | PK |
+| transfer_id | 이체 ID | FK |
+| event_type | 이벤트 종류 | TransferRequested / TransferCompleted / FraudEvaluated |
+| payload | 이벤트 데이터 | JSON (불변) |
+| status | 상태 | PENDING / SENT / FAILED |
+| created_at | 생성일시 |  |
+| published_at | 발행일시 | nullable |
+- Outbox 는 **트랜잭션 내에서 저장 후 비동기 발행**   
+- payload 수정 X
 
-### tb_transfer 이체
-| 컬럼명             | 한글명      | 타입              | 제약                      |
-| --------------- | -------- | --------------- | ----------------------- |
-| transfer_id     | 이체 ID    | BIGINT          | PK                      |
-| from_account_id | 출금 계좌 ID | BIGINT          | FK → account.account_id |
-| to_account_id   | 입금 계좌 ID | BIGINT          | FK → account.account_id |
-| amount          | 이체 금액    | DECIMAL(15,2)   | NOT NULL                |
-| request_at      | 요청 일시    | TIMESTAMP       | NOT NULL                |
-| transfer_type   | 이체 유형    | TRANSFER_TYPE   | NOT NULL                |
-| status          | 이체 상태    | TRANSFER_STATUS | NOT NULL                |
-
-
-
-
-### tb_ledger 원장
-| 컬럼명            | 한글명     | 타입            | 제약                        |
-| -------------- | ------- | ------------- | ------------------------- |
-| ledger_id      | 원장 ID   | BIGINT        | PK                        |
-| account_id     | 계좌 ID   | BIGINT        | FK → account.account_id   |
-| delta_amount   | 증감 금액   | DECIMAL(15,2) | NOT NULL                  |
-| before_balance | 변경 전 잔액 | DECIMAL(15,2) | NOT NULL                  |
-| after_balance  | 변경 후 잔액 | DECIMAL(15,2) | NOT NULL                  |
-| reason         | 변경 사유   | LEDGER_REASON | NOT NULL                  |
-| ref_id         | 참조 ID   | BIGINT        | FK → transfer.transfer_id |
-| created_at     | 생성일시    | TIMESTAMP     | NOT NULL                  |
-
-
-### tb_transfer_event 이체 이력 
-| 컬럼명         | 한글명    | 타입                  | 제약                        |
-| ----------- | ------ | ------------------- | ------------------------- |
-| event_id    | 이벤트 ID | BIGINT              | PK                        |
-| transfer_id | 이체 ID  | BIGINT              | FK → transfer.transfer_id |
-| account_id  | 계좌 ID  | BIGINT              | FK → account.account_id   |
-| amount      | 이체 금액  | DECIMAL(15,2)       | NOT NULL                  |
-| event_type  | 이벤트 유형 | TRANSFER_EVENT_TYPE | NOT NULL                  |
-| occurred_at | 발생 일시  | TIMESTAMP           | NOT NULL                  |
-
-
-
-### tb_transfer_fraud_rule 이상 탐지 룰
-| 컬럼명         | 한글명   | 타입              | 제약       |
-| ----------- | ----- | --------------- | -------- |
-| rule_id     | 룰 ID  | BIGINT          | PK       |
-| name        | 룰 이름  | VARCHAR(100)    | NOT NULL |
-| type        | 룰 유형  | FRAUD_RULE_TYPE | NOT NULL |
-| threshold   | 임계값   | DECIMAL(15,2)   | NOT NULL |
-| time_window | 시간 구간 | INTERVAL        | NULL     |
-| severity    | 위험도   | FRAUD_SEVERITY  | NOT NULL |
-| enabled     | 활성 여부 | BOOLEAN         | NOT NULL |
-
-
-### tb_transfer_fraud_detection 탐지 결과
-| 컬럼명          | 한글명    | 타입                     | 제약                               |
-| ------------ | ------ | ---------------------- | -------------------------------- |
-| detection_id | 탐지 ID  | BIGINT                 | PK                               |
-| event_id     | 이벤트 ID | BIGINT                 | FK → transfer_event.event_id     |
-| rule_id      | 룰 ID   | BIGINT                 | FK → transfer_fraud_rule.rule_id |
-| account_id   | 계좌 ID  | BIGINT                 | FK → account.account_id          |
-| detected_at  | 탐지 일시  | TIMESTAMP              | NOT NULL                         |
-| actual_value | 실제 값   | DECIMAL(15,2)          | NOT NULL                         |
-| threshold    | 기준 값   | DECIMAL(15,2)          | NOT NULL                         |
-| severity     | 위험도    | FRAUD_SEVERITY         | NOT NULL                         |
-| status       | 탐지 상태  | FRAUD_DETECTION_STATUS | NOT NULL                         |
-
-
-### tb_transfer_fraud_action 조치 이력
-| 컬럼명          | 한글명   | 타입                | 제약                                         |
-| ------------ | ----- | ----------------- | ------------------------------------------ |
-| action_id    | 조치 ID | BIGINT            | PK                                         |
-| detection_id | 탐지 ID | BIGINT            | FK → transfer_fraud_detection.detection_id |
-| action_type  | 조치 유형 | FRAUD_ACTION_TYPE | NOT NULL                                   |
-| processed_at | 처리 일시 | TIMESTAMP         | NOT NULL                                   |
-
-
-
-
+### 실패 이벤트 (DeadLetterEvent)
+| 컬럼명 | 설명 | 비고 |
+|---|---|---|
+| id | 실패 이벤트 ID | PK |
+| transfer_id | 이체 ID | FK |
+| failure_type | 실패 유형 | BUSINESS / SYSTEM |
+| error_code | 에러 코드 |  |
+| error_message | 에러 메시지 | 원본 메시지 |
+| retryable | 재시도 가능 여부 | true / false |
+| created_at | 등록일시 |  |
+- DLQ 는 **실패 후 운영자가 재판단 하기 위한 데이터**
+- 자동 수정/삭제 불가
