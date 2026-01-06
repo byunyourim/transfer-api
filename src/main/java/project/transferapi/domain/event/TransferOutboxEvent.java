@@ -1,4 +1,4 @@
-package project.transferapi.domain.user;
+package project.transferapi.domain.event;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -8,21 +8,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Entity
-@Table( name = "TB_USER" )
+@Table( name = "TB_TRANSFER_OUTBOX_EVENT" )
 @NoArgsConstructor( access = AccessLevel.PROTECTED )
 @AllArgsConstructor( access = AccessLevel.PROTECTED )
 @Getter
-public class User {
-    /* 유저 ID */
+public class TransferOutboxEvent {
     @EmbeddedId
-    private UserId id;
-    /* 유저 명 */
-    private String name;
-    /* 유저 상태 */
-    private UserStatus status;
-    /* 생성일시 */
-    private LocalDateTime createdAt;
+    private TransferOutboxEventId id;
+
 }

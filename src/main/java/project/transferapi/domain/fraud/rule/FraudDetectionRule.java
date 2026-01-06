@@ -1,9 +1,7 @@
 package project.transferapi.domain.fraud.rule;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jdk.jfr.Threshold;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,15 +18,16 @@ public class FraudDetectionRule {
     /* 룰 ID */
     @EmbeddedId
     private FraudDetectionRuleId id;
-    /* 이름*/
+    /* 룰 이름*/
     private String name;
     /* 룰 유형 */
     private RuleType type;
     /* 임계값 */
     private Long threshold;
     /* 구간 */
-    private Long window;
-    /* 이상 유형 */
+    @Embedded
+    private ThresholdRange range;
+    /* 위험도 */
     private SeverityType severityType;
     /* 활성 여부 */
     @Column(name = "USE_FLAG")

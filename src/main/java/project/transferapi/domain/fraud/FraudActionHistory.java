@@ -8,20 +8,19 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import project.transferapi.domain.fraud.rule.FraudDetectionRuleId;
-import project.transferapi.domain.transfer.TransferHistory;
 import project.transferapi.domain.transfer.TransferHistoryId;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table( name = "TB_FRAUD_DETECTION" )
+@Table( name = "TB_FRAUD_ACTION_HISTORY" )
 @NoArgsConstructor( access = AccessLevel.PROTECTED )
 @AllArgsConstructor( access = AccessLevel.PROTECTED )
 @Getter
-public class FraudDetection {
+public class FraudActionHistory {
     /* 이상 탐지 ID */
     @EmbeddedId
-    private FraudDetectionId id;
+    private FraudActionHistoryId id;
     /* 이체 이력 ID */
     private TransferHistoryId transferHistoryId;
     /* 룰 ID */
@@ -36,6 +35,6 @@ public class FraudDetection {
     private Long threshold;
     /* 위험 유형 */
     private SeverityType severityType;
-    /* 탐지 유형 */
-    private DetectionType detectionType;
+    /* 탐지상태 유형 */
+    private DetectionStatusType detectionStatusType;
 }
