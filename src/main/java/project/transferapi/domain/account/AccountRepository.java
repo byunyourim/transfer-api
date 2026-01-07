@@ -12,7 +12,7 @@ public interface AccountRepository {
 
     AccountView findAccountView(AccountQuery query);
 
-    AccountViewDetail findAccountDetailById(AccountId accountId);
+    AccountViewDetail findAccountDetailById(AccountId id);
 
     Optional<Account> findAccountById(AccountId id);
 }

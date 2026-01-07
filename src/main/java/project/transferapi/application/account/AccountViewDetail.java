@@ -10,8 +10,8 @@ public record AccountViewDetail (
         AccountId id,
         /* 계좌 번호 */
         Long accountNumber,
-        /* 소유자 ID */
-        Long ownerId,
+        /* 회원 ID */
+        Long userId,
         /* 계좌 상태 */
         AccountStatus status,
         /* 잔액 */

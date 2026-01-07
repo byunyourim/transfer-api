@@ -17,6 +17,6 @@ public class AccountVeiwHandler {
     }
 
     public AccountViewDetail findAccount(AccountQuery query) {
-        return repo.findAccountDetailById(query.accountId());
+        return repo.findAccountDetailById(query.id());
     }
 }

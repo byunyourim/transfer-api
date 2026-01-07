@@ -9,6 +9,8 @@ import project.transferapi.domain.account.AccountStatus;
 @FieldDefaults( level = AccessLevel.PRIVATE )
 @Getter @Setter
 public class AccountViewRequest {
-    Long ownerId;
+    /* 회원 ID */
+    Long userId;
+    /* 계좌 상태 */
     AccountStatus status;
 }
