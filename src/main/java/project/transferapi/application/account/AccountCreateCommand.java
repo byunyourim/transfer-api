@@ -1,28 +1,14 @@
 package project.transferapi.application.account;
 
-import project.transferapi.domain.account.AccountId;
-import project.transferapi.domain.account.AccountStatus;
-import project.transferapi.domain.account.BankCode;
-
-import java.time.LocalDateTime;
-import java.util.Currency;
+import project.transferapi.domain.BankCode;
+import project.transferapi.domain.user.UserId;
 
 public record AccountCreateCommand(
+        /* 회원 ID */
+        UserId userId,
         /* 은행 코드 */
-        BankCode code,
+        BankCode bankCode,
         /* 잔액 */
-        Long balance,
-        /* 단위 */
-        Currency currency,
-        /* 1회 이체한도 */
-        Long perTransferLimit,
-        /* 하루 이체 한도 */
-        Long dailyTransferLimit,
-        /* 생성일자 */
-        LocalDateTime createdAt,
-        /* 수정일자 */
-        LocalDateTime modifiedAt,
-        /* 소유자 ID */
-        Long ownerId
+        Long balance
 ) {
 }

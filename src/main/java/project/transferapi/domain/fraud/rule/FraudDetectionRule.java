@@ -1,7 +1,6 @@
 package project.transferapi.domain.fraud.rule;
 
 import jakarta.persistence.*;
-import jdk.jfr.Threshold;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

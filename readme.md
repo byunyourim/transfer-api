@@ -1,10 +1,8 @@
 # 거래 / 이상탐지 시스템 
 
 ---
-
 ## 테이블 
 ### 유저 (User)
-
 | 컬럼명 | 설명 | 비고 |
 |---|---|---|
 | id | 유저 ID | PK |
@@ -84,7 +82,14 @@
 | threshold_value | 기준값 | threshold or min/max |
 | detection_status | 탐지 상태 | DETECTED / PASSED    |
 | detected_at | 탐지 시각 |                      |
+- 목적: 부정거래 탐지 결과 이력 저장
+- 어떤 이체에서 이상이 탐지되었는지 기록
+- 어떤 룰에 걸렸는지 (ruleId)
+- 실제값(actualValue)과 임계값(threshold) 저장
+- 위험도(severityType) 저장
+- 이상이 탐지된 경우에만 기록
 - 탐지 결과 수정 불가
+
 
 ### 조치 이력 (FraudActionHistory)
 | 컬럼명 | 설명        | 비고                     |
@@ -96,6 +101,10 @@
 | processed_at | 처리일시      | 실제 조치 시점               |
 | created_at | 등록일시      |                        |
 | updated_at | 수정일시      |                        |
+- 목적: 탐지된 이상 거래에 대한 조치 이력 저장
+- 탐지이력과 거의 동일한 구조
+- 추가로 detectionStatusType 필드가 있음 (조치 상태 관리용)
+- 탐지 후 실시간/사후 조치를 취한 내역 저장
 - 하나의 탐지 결과에 **여러 조치 이력**이 생길 수 있음
 
 ### 아웃박스 이벤트 큐 (TransferOutbox)
@@ -108,7 +117,13 @@
 | status | 상태 | PENDING / SENT / FAILED |
 | created_at | 생성일시 |  |
 | published_at | 발행일시 | nullable |
-- Outbox 는 **트랜잭션 내에서 저장 후 비동기 발행**   
+  목적: 이벤트 기반 아키텍처의 Outbox Pattern 구현
+- 이체가 생성되면 TransferCreatedEvent를 외부 시스템에 발행하기 위한 임시 저장소
+- 데이터 정합성 보장: 이체 데이터와 이벤트 발행을 동일 트랜잭션에서 처리
+- 메시지 큐나 다른 마이크로서비스에 이벤트 전달 보장
+- 상태 관리: PENDING → SENT/FAILED
+- 재시도 로직 포함 (최대 3회)
+- Outbox 는 **트랜잭션 내에서 저장 후 비동기 발행**
 - payload 수정 X
 
 ### 실패 이벤트 (DeadLetterEvent)
@@ -123,3 +138,12 @@
 | created_at | 등록일시 |  |
 - DLQ 는 **실패 후 운영자가 재판단 하기 위한 데이터**
 - 자동 수정/삭제 불가
+
+---
+
+### 💡 Outbox Pattern
+데이터 저장과 이벤트 발행의 원자성을 보장하는 패턴
+
+1. 이체 데이터 저장 + 아웃박스에 이벤트 저장 → 같은 트랜잭션
+2. 별도 배치/스케줄러가 아웃박스를 폴링하여 메시지 큐에 발행
+3. 발행 성공 시 SENT 상태로 변경

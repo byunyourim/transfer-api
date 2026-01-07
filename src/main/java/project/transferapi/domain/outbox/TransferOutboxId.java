@@ -1,4 +1,4 @@
-package project.transferapi.domain.event;
+package project.transferapi.domain.outbox;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -11,12 +11,12 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @NoArgsConstructor( access = AccessLevel.PROTECTED )
 @AllArgsConstructor( access = AccessLevel.PRIVATE )
-public @Getter class TransferOutboxEventId implements Serializable {
+public @Getter class TransferOutboxId implements Serializable {
     @Serial
     private static final long serialVersionUID = 4559539098383372659L;
 
     /* outbox event ID */
-    @Column( name = "TRANSFER_OUTBOX_EVENT_ID" )
+    @Column( name = "TRANSFER_OUTBOX_ID" )
     private Long id;
 
     @Override
@@ -29,7 +29,7 @@ public @Getter class TransferOutboxEventId implements Serializable {
      * @param id outbox event ID
      * @return TransferOutboxEventId
      */
-    public static TransferOutboxEventId of(Long id ) {
-        return ( id == null || id < 0L ) ? null : new TransferOutboxEventId( id );
+    public static TransferOutboxId of(Long id ) {
+        return ( id == null || id < 0L ) ? null : new TransferOutboxId( id );
     }
 }

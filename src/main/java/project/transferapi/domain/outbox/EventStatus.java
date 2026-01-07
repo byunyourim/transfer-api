@@ -1,16 +1,16 @@
-package project.transferapi.domain.fraud;
+package project.transferapi.domain.outbox;
 
 import project.transferapi.domain.Code;
 
-public enum SeverityType implements Code {
-    LOW("ST01", "낮음"),
-    MEDIUM("ST02", "보통"),
-    HIGH("ST03", "높음");     // (위험도: 높음) 의 경우 이체가 차단됨
+public enum EventStatus implements Code {
+    PENDING("ES01", "발행대기"),
+    SENT("ES02", "발행완료"),
+    FAILED("ES03", "발행실패");
 
     private final String code;
     private final String name;
 
-    SeverityType(String code, String name) {
+    EventStatus(String code, String name) {
         this.code = code;
         this.name = name;
     }

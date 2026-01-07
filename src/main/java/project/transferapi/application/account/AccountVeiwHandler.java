@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import project.transferapi.domain.account.AccountRepository;
+import project.transferapi.presentation.account.AccountCreateResponse;
 
 @Component
 @Transactional(readOnly = true)
@@ -17,6 +18,6 @@ public class AccountVeiwHandler {
     }
 
     public AccountViewDetail findAccount(AccountQuery query) {
-        return repo.findAccountDetailById(query.accountId());
+        return repo.findAccountDetailById(query.id());
     }
 }
