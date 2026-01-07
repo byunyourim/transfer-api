@@ -5,6 +5,6 @@ import project.transferapi.application.account.AccountModifyCommand;
 
 @Component
 public class AccountModifyHandler {
-    public void modify(AccountModifyCommand command) {
+    public void modifyAccount(AccountModifyCommand command) {
     }
 }

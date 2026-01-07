@@ -1,4 +1,4 @@
-package project.transferapi.repository.account;
+package project.transferapi.infra.account;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

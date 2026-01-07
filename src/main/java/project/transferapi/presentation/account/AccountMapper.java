@@ -2,6 +2,8 @@ package project.transferapi.presentation.account;
 
 import org.mapstruct.Mapper;
 import project.transferapi.application.account.*;
+import project.transferapi.domain.Creator;
+import project.transferapi.domain.Modifier;
 import project.transferapi.presentation.VOMapper;
 
 @Mapper
@@ -14,7 +16,7 @@ public interface AccountMapper extends VOMapper {
 
     AccountViewDetailResponse map(AccountViewDetail viewDetail);
 
-    AccountCreateCommand map(AccountCreateRequest request);
+    AccountCreateCommand map(AccountCreateRequest request, Creator creator);
 
-    AccountModifyCommand map(Long id, AccountModifyRequest request);
+    AccountModifyCommand map(Long id, AccountModifyRequest request, Modifier modifier);
 }

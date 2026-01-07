@@ -1,4 +1,4 @@
-package project.transferapi.repository;
+package project.transferapi.infra;
 
 import com.querydsl.jpa.JPQLTemplates;
 import com.querydsl.jpa.impl.JPAQueryFactory;

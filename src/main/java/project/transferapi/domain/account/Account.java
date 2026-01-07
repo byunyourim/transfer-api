@@ -37,18 +37,20 @@ public class Account implements Persistable< AccountId > {
     @Column( name = "REG_DT" )
     private LocalDateTime createdAt;
 
+    private Long version;
+
     /**
      * 계좌 생성
      * @param command 계좌 생성 정보
      * @param repo 계좌 repository
      * @return Account
      */
-    static Account of( AccountCreateCommand command, AccountRepository repo ) {
+    public static Account of( AccountCreateCommand command, AccountRepository repo ) {
         Account account = new Account();
         account.id = repo.nextId();
-        account.accountNumber = command.accountNumber();
+        account.accountNumber = 1L;
         account.code = command.code();
-        account.status = command.status();
+        account.status = AccountStatus.ACTIVE;
         account.balance = command.balance();
         account.createdAt = command.createdAt();
 
