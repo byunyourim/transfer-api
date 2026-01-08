@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import project.transferapi.domain.account.AccountRepository;
+import project.transferapi.presentation.account.AccountCreateResponse;
 
 @Component
 @Transactional(readOnly = true)

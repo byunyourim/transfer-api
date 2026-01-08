@@ -21,8 +21,8 @@ public class Account implements Persistable< AccountId > {
     private AccountId id;
     /* 계좌번호 */
     private Long accountNumber;
-    /* 소유자 ID */
-    private Long ownerId;
+    /* 회원 ID */
+    private Long userId;
     /* 은행코드 */
     private BankCode code;
     /* 계좌상태 */
@@ -31,7 +31,6 @@ public class Account implements Persistable< AccountId > {
     @Column(nullable = false)
     private Long balance;
     /* 1회 이체한도 */
-    @Column
     private Long perTransferLimit;
     /* 생성일지 */
     @Column( name = "REG_DT" )

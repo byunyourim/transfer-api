@@ -7,6 +7,8 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import project.transferapi.application.transfer.TransferCommand;
+import project.transferapi.domain.account.AccountId;
 
 import java.time.LocalDateTime;
 
@@ -20,15 +22,32 @@ public class Transfer {
     @EmbeddedId
     private TransferId id;
     /* 출금계좌 ID */
-    private Long fromId;
+    private AccountId fromAccountId;
     /* 입금계좌 ID */
-    private Long toId;
+    private AccountId toAccountId;
     /* 이체금액 */
     private Long amount;
-    /* 요청일시 */
-    private LocalDateTime requestedAt;
     /* 이체유형 */
     private TransferType type;
     /* 이체상태 */
     private TransferStatus status;
+    /* 요청일시 */
+    private LocalDateTime requestedAt;
+
+    /**
+     * 이체 생성
+     * @param command 이체 생성 정보
+     * @param repo 이체 repository
+     * @return Transfer
+     */
+    public static Transfer of(TransferCommand command, TransferRepository repo) {
+        Transfer transfer = new Transfer();
+        transfer.fromAccountId = command.fromAccountId();
+        transfer.toAccountId = command.toAccountId();
+        transfer.amount = command.amount();
+        transfer.type = command.type();
+        transfer.status = command.status();
+
+        return transfer;
+    }
 }

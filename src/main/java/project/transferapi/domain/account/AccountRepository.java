@@ -15,4 +15,8 @@ public interface AccountRepository {
     AccountViewDetail findAccountDetailById(AccountId id);
 
     Optional<Account> findAccountById(AccountId id);
+
+    long accountByAccountNumber(Long accountNumber);
+
+    long accountById(AccountId accountId);
 }

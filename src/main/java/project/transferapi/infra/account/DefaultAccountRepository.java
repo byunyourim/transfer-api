@@ -17,6 +17,7 @@ import project.transferapi.domain.account.AccountRepository;
 import project.transferapi.domain.account.QAccount;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.querydsl.core.types.Projections.constructor;
@@ -47,8 +48,8 @@ public class DefaultAccountRepository implements AccountRepository {
     public AccountView findAccountView(AccountQuery query) {
         JPQLQuery<Account> listQuery = queryAccount();
 
-        if (query.ownerId() != null) {
-            listQuery.where(account.ownerId.eq(query.ownerId()));
+        if (query.userId() != null) {
+            listQuery.where(account.ownerId.eq(query.userId()));
         }
         if (query.status() != null) {
             listQuery.where(account.status.eq(query.status()));
@@ -72,6 +73,26 @@ public class DefaultAccountRepository implements AccountRepository {
                            .from(account)
                            .where(account.id.eq(accountId))
                            .fetchOne();
+    }
+
+    /**
+     * 계좌 정보 조회
+     * @param id 계좌 ID
+     * @return Optional<Account>
+     */
+    @Override
+    public Optional<Account> findAccountById(AccountId id) {
+        return Optional.empty();
+    }
+
+    /**
+     * 계좌 개수 조회
+     * @param accountNumber 계좌번호
+     * @return long
+     */
+    @Override
+    public long accountByAccountNumber(Long accountNumber) {
+        return 1L;
     }
 
     /**

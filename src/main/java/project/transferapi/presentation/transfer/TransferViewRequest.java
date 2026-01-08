@@ -1,4 +1,4 @@
-package project.transferapi.presentation.account;
+package project.transferapi.presentation.transfer;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -7,11 +7,11 @@ import lombok.experimental.FieldDefaults;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter @Setter
-public class AccountCreateRequest {
+public class TransferViewRequest {
     /* 회원 ID */
     Long userId;
-    /* 잔액 */
-    Long balance;
-    /* 은행 코드 */
-    String bankCode;
+    /* 시작일자 */
+    Long start;
+    /* 종료일자 */
+    Long end;
 }
