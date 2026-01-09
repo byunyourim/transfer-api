@@ -26,6 +26,8 @@ public class FraudDetectionRule {
     /* 구간 */
     @Embedded
     private ThresholdRange range;
+    /* 기간 구분 유형 */
+    private TermType termType;
     /* 위험도 */
     private SeverityType severityType;
     /* 활성 여부 */

@@ -24,4 +24,6 @@ public enum RuleType implements Code {
     public String getName() {
         return this.name;
     }
+
+
 }

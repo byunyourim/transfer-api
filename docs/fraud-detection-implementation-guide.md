@@ -1,20 +1,6 @@
 # 이체 이상탐지 시스템 구현 가이드 (Outbox 패턴)
 
-## 목차
-1. [개요](#1-개요)
-2. [Outbox 패턴](#2-outbox-패턴)
-3. [시스템 아키텍처](#3-시스템-아키텍처)
-4. [도메인 모델](#4-도메인-모델)
-5. [탐지 규칙](#5-탐지-규칙)
-6. [구현 가이드](#6-구현-가이드)
-7. [이벤트 발행 처리](#7-이벤트-발행-처리)
-8. [테스트](#8-테스트)
-9. [배포](#9-배포)
-
----
-
 ## 1. 개요
-
 ### 1.1 목적
 - 실시간으로 이상 거래 패턴 탐지
 - 금융 사기 및 비정상적인 이체 차단
@@ -234,11 +220,8 @@ sequenceDiagram
 ---
 
 ## 4. 도메인 모델
-
 ### 4.1 핵심 엔티티
-
 #### 4.1.1 TransferOutboxEvent (Outbox 이벤트)
-
 ```java
 @Entity
 @Table(name = "TB_TRANSFER_OUTBOX_EVENT")
@@ -264,7 +247,6 @@ public class TransferOutboxEvent {
 ```
 
 #### 4.1.2 FraudDetectionRule (탐지 규칙)
-
 ```java
 @Entity
 @Table(name = "TB_FRAUD_RULE")
@@ -287,7 +269,6 @@ public class FraudDetectionRule {
 ```
 
 #### 4.1.3 FraudDetectionHistory (탐지 이력)
-
 ```java
 @Entity
 @Table(name = "TB_FRAUD_DETECTION_HISTORY")
@@ -306,9 +287,7 @@ public class FraudDetectionHistory {
 ```
 
 ### 4.2 Enum 타입
-
 #### 4.2.1 EventStatus (이벤트 상태)
-
 ```java
 public enum EventStatus {
     PENDING("ES01", "발행대기"),
@@ -318,7 +297,6 @@ public enum EventStatus {
 ```
 
 #### 4.2.2 RuleType (탐지 규칙 유형)
-
 ```java
 public enum RuleType {
     AMOUNT("RT01", "금액"),      // 금액 기반 탐지
@@ -328,7 +306,6 @@ public enum RuleType {
 ```
 
 #### 4.2.3 SeverityType (위험도)
-
 ```java
 public enum SeverityType {
     LOW("ST01", "낮음"),         // 모니터링만 수행
@@ -336,21 +313,20 @@ public enum SeverityType {
     HIGH("ST03", "높음");        // 즉시 차단
 }
 ```
-
 ---
 
 ## 5. 탐지 규칙
-
 ### 5.1 금액 기반 탐지 (AMOUNT)
+비정상적인 이체 금액 탐지
 
-**목적**: 비정상적으로 큰 금액의 이체 탐지
+**규칙 예시**
 
-**규칙 예시**:
-| 규칙명 | 조건 | 임계값 | 위험도 |
-|--------|------|--------|--------|
+| 규칙명 | 조건 | 임계값         | 위험도 |
+|--------|------|-------------|--------|
 | 고액 이체 | 1회 이체 금액 | 10,000,000원 | HIGH |
-| 중액 이체 | 1회 이체 금액 | 5,000,000원 | MEDIUM |
-| 일일 누적 | 일일 총 이체 금액 | 20,000,000원 | HIGH |
+| 중액 이체 | 1회 이체 금액 | 5,000,000원  | MEDIUM |
+| 일일 누적 | 일일 총 이체 금액 | 30,000,000원 | HIGH |
+
 
 **구현 로직**:
 ```java
@@ -381,9 +357,7 @@ private FraudDetection applyAmountRule(TransferCommand command, FraudDetectionRu
 ```
 
 ### 5.2 횟수 기반 탐지 (COUNT)
-
 **목적**: 짧은 시간에 반복되는 이체 탐지
-
 **규칙 예시**:
 | 규칙명 | 조건 | 임계값 | 구간 | 위험도 |
 |--------|------|--------|------|--------|
@@ -416,9 +390,7 @@ private FraudDetection applyCountRule(TransferCommand command, FraudDetectionRul
 ```
 
 ### 5.3 속도 기반 탐지 (VELOCITY)
-
 **목적**: 급격한 이체 패턴 변화 탐지
-
 **규칙 예시**:
 | 규칙명 | 조건 | 임계값 | 위험도 |
 |--------|------|--------|--------|
@@ -452,9 +424,7 @@ private FraudDetection applyVelocityRule(TransferCommand command, FraudDetection
 ---
 
 ## 6. 구현 가이드
-
 ### 6.1 구현 순서
-
 ```mermaid
 graph LR
     A[1. Outbox Event] --> B[2. Repository]
@@ -478,11 +448,8 @@ graph LR
 ---
 
 ### 6.2 단계 1: TransferOutboxEvent 필드 추가
-
 #### EventStatus Enum
-
 **위치**: `src/main/java/project/transferapi/domain/event/EventStatus.java`
-
 ```java
 package project.transferapi.domain.event;
 
@@ -514,9 +481,7 @@ public enum EventStatus implements Code {
 ```
 
 #### TransferOutboxEvent 완성
-
 **위치**: `src/main/java/project/transferapi/domain/event/TransferOutboxEvent.java`
-
 ```java
 package project.transferapi.domain.event;
 
@@ -608,9 +573,7 @@ public class TransferOutboxEvent {
 ---
 
 ### 6.3 단계 2: Repository 레이어
-
 #### TransferOutboxEventRepository
-
 **위치**: `src/main/java/project/transferapi/domain/event/TransferOutboxEventRepository.java`
 
 ```java
@@ -627,7 +590,6 @@ public interface TransferOutboxEventRepository {
 ```
 
 #### TransferOutboxEventJPARepository
-
 **위치**: `src/main/java/project/transferapi/infra/event/TransferOutboxEventJPARepository.java`
 
 ```java
@@ -652,7 +614,6 @@ public interface TransferOutboxEventJPARepository
 ```
 
 #### DefaultTransferOutboxEventRepository
-
 **위치**: `src/main/java/project/transferapi/infra/event/DefaultTransferOutboxEventRepository.java`
 
 ```java
@@ -695,7 +656,6 @@ public class DefaultTransferOutboxEventRepository implements TransferOutboxEvent
 ```
 
 #### FraudDetectionRuleRepository & 기타
-
 **위치**: `src/main/java/project/transferapi/domain/fraud/rule/FraudDetectionRuleRepository.java`
 
 ```java
@@ -713,7 +673,6 @@ public interface FraudDetectionRuleRepository {
 ```
 
 **위치**: `src/main/java/project/transferapi/domain/fraud/FraudDetectionHistoryRepository.java`
-
 ```java
 package project.transferapi.domain.fraud;
 
@@ -731,7 +690,6 @@ public interface FraudDetectionHistoryRepository {
 ```
 
 **TransferRepository 확장**:
-
 ```java
 // 기존 메서드에 추가
 long countByFromAccountIdAndRequestedAtBetween(
@@ -750,7 +708,6 @@ Long getTotalAmountByFromAccountId(
 ---
 
 ### 6.4 단계 3: TransferStatisticsService
-
 **위치**: `src/main/java/project/transferapi/application/stat/TransferStatisticsService.java`
 
 ```java

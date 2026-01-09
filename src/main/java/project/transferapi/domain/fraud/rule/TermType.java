@@ -1,16 +1,19 @@
-package project.transferapi.domain.fraud;
+package project.transferapi.domain.fraud.rule;
 
 import project.transferapi.domain.Code;
 
-public enum SeverityType implements Code {
-    LOW("ST01", "낮음"),
-    MEDIUM("ST02", "보통"),
-    HIGH("ST03", "높음");     // (위험도: 높음)인 경우 이체 차단
+public enum TermType implements Code {
+    MINUTE("TT01", "분"),
+    HOURS("TT02", "시간"),
+    PER("TT03", "회"),
+    DAY("TT04", "일"),
+    WEEK("TT05", "주"),
+    MONTH("TT06", "월");
 
     private final String code;
     private final String name;
 
-    SeverityType(String code, String name) {
+    TermType(String code, String name) {
         this.code = code;
         this.name = name;
     }

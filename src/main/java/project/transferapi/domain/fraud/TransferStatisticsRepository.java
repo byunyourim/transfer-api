@@ -1,7 +1,7 @@
 package project.transferapi.domain.fraud;
 
-import org.springframework.stereotype.Repository;
+import project.transferapi.domain.account.AccountId;
 
-@Repository
 public interface TransferStatisticsRepository {
+    long findTotalAmountById(AccountId fromAccountId);
 }

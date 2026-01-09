@@ -17,19 +17,10 @@ public class TransferOutboxCreateService {
      */
     public void create(TransferCreatedEvent event) {
         try {
-            // 이벤트를 JSON으로 변환
             String payload = objectMapper.writeValueAsString(event);
-
-            // Outbox 생성
-            TransferOutbox outbox = TransferOutbox.of(
-                    repository.nextId(),
-                    event.transferId(),
-                    TransferEventType.REQUESTED,
-                    payload
-            );
-
-            // 저장
+            TransferOutbox outbox = TransferOutbox.of(event.transferId(), TransferEventType.REQUESTED, payload);
             repository.save(outbox);
+
         } catch (Exception e) {
             throw new RuntimeException("Failed to serialize event", e);
         }

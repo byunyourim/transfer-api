@@ -14,6 +14,8 @@ public record TransferCommand(
         AccountId toAccountId,
         /* 이체 금액 */
         Long amount,
+        /* 일일 누적 금액 */
+        Long totalAmount,
         /* 이체 유형 */
         TransferType type,
         /* 이체 상태 */
