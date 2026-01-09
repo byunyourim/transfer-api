@@ -25,15 +25,7 @@ public record FraudDetectionResult(
             /* 위험도 */
             SeverityType severityType
     ) {
-        public FraudDetection(FraudDetectionRule rule, long actualValue, long threshold) {
-            this(true, rule, actualValue, threshold, rule.getSeverityType());
-        }
-
-        public FraudDetection() {
-            this(false, null, 0, 0, null);
-        }
     }
-
     /**
      * 이상 탐지 결과 생성
      * @param detections 탐지내역

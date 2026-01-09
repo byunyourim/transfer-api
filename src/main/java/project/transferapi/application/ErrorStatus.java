@@ -8,6 +8,7 @@ public @Getter enum ErrorStatus {
     PER_TRANSFER_LIMIT_EXCEED( "1회 이체한도가 기준치를 초과하였습니다." ),
     DAILY_TRANSFER_LIMIT_EXCEED( "하루 이체한도가 기준치를 초과하였습니다." ),
     TRANSFER_AMOUNT_INVALID( "이체할 금액이 올바르지 않습니다." ),
+    BLOCKED_TRANSFER( "이체가 차단되었습니다. 위험도: %s " ),
     USER_NOT_FOUND( "소유자 정보를 찾을 수 없습니다." );
 
     private final String message;

@@ -12,6 +12,8 @@ import project.transferapi.domain.transfer.Transfer;
 import project.transferapi.domain.transfer.TransferRepository;
 import project.transferapi.domain.transfer.TransferValidationService;
 
+import static project.transferapi.application.ErrorStatus.BLOCKED_TRANSFER;
+
 @Component
 @Transactional
 @RequiredArgsConstructor
@@ -40,7 +42,7 @@ public class TransferCreateHandler {
         FraudDetectionResult fraudResult = detectionService.detect(command);
         // 탐지 결과에 따른 처리
         if (fraudResult.blocked()) {
-            throw new IllegalStateException("이체가 차단되었습니다. 위험도: " + fraudResult.type());
+            throw new TransferBadRequestException(BLOCKED_TRANSFER, fraudResult.type());
         }
         Transfer transfer = Transfer.of(command, repo);
         repo.save(transfer);
