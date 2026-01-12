@@ -11,12 +11,12 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @NoArgsConstructor( access = AccessLevel.PROTECTED )
 @AllArgsConstructor( access = AccessLevel.PRIVATE )
-public @Getter class TransferHistoryId implements Serializable {
+public @Getter class TransferStatusHistoryId implements Serializable {
     @Serial
     private static final long serialVersionUID = 4559539098383372659L;
 
     /* 이체 이력 ID */
-    @Column( name = "TRANSFER_HISTORY_ID" )
+    @Column( name = "TRANSFER_STATUS_HISTORY_ID" )
     private Long id;
 
     @Override
@@ -29,7 +29,7 @@ public @Getter class TransferHistoryId implements Serializable {
      * @param id 회원 ID
      * @return UserId
      */
-    public static TransferHistoryId of(Long id ) {
-        return ( id == null || id < 0L ) ? null : new TransferHistoryId( id );
+    public static TransferStatusHistoryId of(Long id ) {
+        return ( id == null || id < 0L ) ? null : new TransferStatusHistoryId( id );
     }
 }

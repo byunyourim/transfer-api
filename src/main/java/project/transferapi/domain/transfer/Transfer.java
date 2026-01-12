@@ -51,7 +51,6 @@ public class Transfer {
         transfer.type = command.type();
         transfer.status = command.status();
         transfer.requestedAt = LocalDateTime.now();
-
         // 이벤트 발행
         DomainEventPublish.publish(new TransferCreatedEvent(transfer));
 

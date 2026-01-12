@@ -7,9 +7,8 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import project.transferapi.domain.account.AccountId;
 import project.transferapi.domain.fraud.rule.FraudDetectionRuleId;
-import project.transferapi.domain.transfer.TransferHistoryId;
+import project.transferapi.domain.transfer.TransferStatusHistoryId;
 
 import java.time.LocalDateTime;
 
@@ -23,11 +22,9 @@ public class FraudDetectionHistory {
     @EmbeddedId
     private FraudDetectionHistoryId id;
     /* 이체 이력 ID */
-    private TransferHistoryId transferHistoryId;
+    private TransferStatusHistoryId transferHistoryId;
     /* 룰 ID */
     private FraudDetectionRuleId ruleId;
-    /* 계좌 ID */
-    private AccountId accountId;
     /* 탐지 일시 */
     private LocalDateTime detectedAt;
     /* 실제 값 */

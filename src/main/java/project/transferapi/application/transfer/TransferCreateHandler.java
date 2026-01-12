@@ -37,6 +37,11 @@ public class TransferCreateHandler {
         accountValidationService.validAccountInfo(command.fromAccountId(), command.toAccountId());
         // 이체 금액 검증
         validationService.validTransferAmount(command.fromAccountId(), command.amount());
+        // 이체 등록
+        Transfer transfer = Transfer.of(command, repo);
+        repo.save(transfer);
+
+        동일 계
 
         // 이상거래 탐지
         FraudDetectionResult fraudResult = detectionService.detect(command);
@@ -44,10 +49,8 @@ public class TransferCreateHandler {
         if (fraudResult.blocked()) {
             throw new TransferBadRequestException(BLOCKED_TRANSFER, fraudResult.type());
         }
-        Transfer transfer = Transfer.of(command, repo);
-        repo.save(transfer);
 
-        // 탐지된 경우 (차단되지는 않았지만 의심스러운 경우) Outbox에 이벤트 저장
+        // 탐지된 경우 (차단되지는 않았지만 의심스러운 경우) outbox 에 이벤트 저장
         if (!fraudResult.detections().isEmpty()) {
             outboxCreateService.create(new TransferCreatedEvent(transfer));
         }
