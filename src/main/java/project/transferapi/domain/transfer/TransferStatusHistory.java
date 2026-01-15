@@ -37,12 +37,11 @@ public class TransferStatusHistory {
     public static void of(TransferCommand command, List<FraudDetectionResult.FraudDetection> detections, FraudDetectionHistoryRepository repo) {
         detections.forEach( detection -> {
             TransferStatusHistory transferStatusHistory = new TransferStatusHistory();
-//            transferStatusHistory.id = repo.nextId();
-//            transferStatusHistory.transferId = command.;
+            transferStatusHistory.id = repo.nextId();
+//            transferStatusHistory.transferId = command;
 //            transferStatusHistory.accountId = ;
 //            transferStatusHistory.amount = command.amount();
 //            transferStatusHistory.eventType = ;
-
             repo.saveAll(detections);
         });
     }

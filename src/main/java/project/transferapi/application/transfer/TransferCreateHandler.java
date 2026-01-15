@@ -40,16 +40,12 @@ public class TransferCreateHandler {
         // 이체 등록
         Transfer transfer = Transfer.of(command, repo);
         repo.save(transfer);
-
-        동일 계
-
         // 이상거래 탐지
         FraudDetectionResult fraudResult = detectionService.detect(command);
         // 탐지 결과에 따른 처리
         if (fraudResult.blocked()) {
             throw new TransferBadRequestException(BLOCKED_TRANSFER, fraudResult.type());
         }
-
         // 탐지된 경우 (차단되지는 않았지만 의심스러운 경우) outbox 에 이벤트 저장
         if (!fraudResult.detections().isEmpty()) {
             outboxCreateService.create(new TransferCreatedEvent(transfer));

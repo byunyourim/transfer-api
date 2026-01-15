@@ -18,7 +18,7 @@ public class TransferOutboxCreateService {
     public void create(TransferCreatedEvent event) {
         try {
             String payload = objectMapper.writeValueAsString(event);
-            TransferOutbox outbox = TransferOutbox.of(repository.nextId(), event.transferId(), TransferEventType.REQUESTED, payload);
+            TransferOutbox outbox = TransferOutbox.of(event.transferId(), TransferEventType.REQUESTED, payload);
             repository.save(outbox);
 
         } catch (Exception e) {

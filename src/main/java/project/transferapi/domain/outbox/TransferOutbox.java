@@ -41,15 +41,14 @@ public class TransferOutbox {
 
     /**
      * outbox 이벤트 생성
-     * @param id outboxevent ID
      * @param transferId 이체 ID
      * @param eventType 이체 이벤트 유형
      * @param payload 페이로드
      * @return TransferOutboxEvent
      */
-    public static TransferOutbox of(TransferOutboxId id, TransferId transferId, TransferEventType eventType, String payload) {
+    public static TransferOutbox of(TransferId transferId, TransferEventType eventType, String payload) {
         TransferOutbox event = new TransferOutbox();
-        event.id = id;
+        event.id = TransferOutboxId.of(0L);
         event.transferId = transferId;
         event.eventType = eventType;
         event.payload = payload;
