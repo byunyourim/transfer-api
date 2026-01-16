@@ -29,4 +29,12 @@ public class TransferStatistics {
     private Long totalAmount;
     /* 총 이체 건수 */
     private Long count;
+
+    // 작업중
+    public static TransferStatistics of() {
+        TransferStatistics stat = new TransferStatistics();
+        stat.id = TransferStatisticsId.of(0L);
+        
+        return stat;
+    }
 }
