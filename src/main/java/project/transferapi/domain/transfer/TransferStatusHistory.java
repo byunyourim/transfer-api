@@ -38,10 +38,10 @@ public class TransferStatusHistory {
         detections.forEach( detection -> {
             TransferStatusHistory transferStatusHistory = new TransferStatusHistory();
             transferStatusHistory.id = repo.nextId();
-//            transferStatusHistory.transferId = command;
-//            transferStatusHistory.accountId = ;
-//            transferStatusHistory.amount = command.amount();
-//            transferStatusHistory.eventType = ;
+            transferStatusHistory.transferId = command.transferId();    // 확인 필요
+            transferStatusHistory.accountId = command.fromAccountId();      // 확인 필요
+            transferStatusHistory.amount = command.amount();
+            transferStatusHistory.eventType = null;     // 확인필요
             repo.saveAll(detections);
         });
     }

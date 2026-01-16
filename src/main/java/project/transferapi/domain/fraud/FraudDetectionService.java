@@ -3,6 +3,7 @@ package project.transferapi.domain.fraud;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import project.transferapi.application.fraud.FraudDetection;
+import project.transferapi.application.fraud.FraudDetectionResult;
 import project.transferapi.application.transfer.TransferCommand;
 import project.transferapi.domain.fraud.rule.FraudDetectionRule;
 import project.transferapi.domain.fraud.rule.FraudDetectionRuleRepository;
@@ -34,7 +35,7 @@ public class FraudDetectionService {
      * @param command 이체 요청 정보
      * @return FraudDetectionResult
      */
-    public List<FraudDetection> detect(TransferCommand command) {
+    public FraudDetectionResult detect(TransferCommand command) {
         // 활성화된 탐지 룰 목록 조회
         List<FraudDetectionRule> rules = ruleRepository.findAllByEnabledTrue();
 
@@ -52,7 +53,7 @@ public class FraudDetectionService {
         if (!detections.isEmpty()) {
             saveDetectionHistory(command, detections);
         }
-        return result;
+        return new FraudDetectionResult(result);
     }
 
     /**
