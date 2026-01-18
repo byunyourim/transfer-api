@@ -1,7 +1,6 @@
 package project.transferapi.domain.fraud.rule;
 
 import jakarta.persistence.*;
-import jdk.jfr.Threshold;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,6 +26,8 @@ public class FraudDetectionRule {
     /* 구간 */
     @Embedded
     private ThresholdRange range;
+    /* 기간 구분 유형 */
+    private TermType termType;
     /* 위험도 */
     private SeverityType severityType;
     /* 활성 여부 */

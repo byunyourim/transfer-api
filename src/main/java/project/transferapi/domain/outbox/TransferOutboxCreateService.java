@@ -1,0 +1,28 @@
+package project.transferapi.domain.outbox;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import project.transferapi.domain.transfer.TransferEventType;
+import tools.jackson.databind.ObjectMapper;
+
+@Service
+@RequiredArgsConstructor
+public class TransferOutboxCreateService {
+    private final TransferOutboxRepository repository;
+    private final ObjectMapper objectMapper;
+
+    /**
+     * transfer Outbox 생성
+     * @param event 이벤트
+     */
+    public void create(TransferCreatedEvent event) {
+        try {
+            String payload = objectMapper.writeValueAsString(event);
+            TransferOutbox outbox = TransferOutbox.of(event.transferId(), TransferEventType.REQUESTED, payload);
+            repository.save(outbox);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to serialize event", e);
+        }
+    }
+}

@@ -10,7 +10,6 @@ import project.transferapi.domain.account.AccountStatus;
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Getter @Setter
 public class AccountModifyRequest {
-    AccountId id;
     /* 1회 이체한도 */
     Long perTransferLimit;
     /* 하루 이체한도 */

@@ -29,7 +29,7 @@ public @Getter class TransferStatisticsId implements Serializable {
      * @param id 이체집계 ID
      * @return TransferStatisticsId
      */
-    public static TransferStatisticsId of(Long id ) {
+    public static TransferStatisticsId of(Long id) {
         return ( id == null || id < 0L ) ? null : new TransferStatisticsId( id );
     }
 }

@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Persistable;
 import project.transferapi.application.account.AccountCreateCommand;
+import project.transferapi.domain.BankCode;
 
 import java.time.LocalDateTime;
 
@@ -21,17 +22,16 @@ public class Account implements Persistable< AccountId > {
     private AccountId id;
     /* 계좌번호 */
     private Long accountNumber;
-    /* 소유자 ID */
-    private Long ownerId;
+    /* 회원 ID */
+    private Long userId;
     /* 은행코드 */
-    private BankCode code;
+    private BankCode bankCode;
     /* 계좌상태 */
     private AccountStatus status;
     /* 잔액 */
     @Column(nullable = false)
     private Long balance;
     /* 1회 이체한도 */
-    @Column
     private Long perTransferLimit;
     /* 생성일지 */
     @Column( name = "REG_DT" )
@@ -49,10 +49,9 @@ public class Account implements Persistable< AccountId > {
         Account account = new Account();
         account.id = repo.nextId();
         account.accountNumber = 1L;
-        account.code = command.code();
+        account.bankCode = command.bankCode();
         account.status = AccountStatus.ACTIVE;
         account.balance = command.balance();
-        account.createdAt = command.createdAt();
 
         return account;
     }

@@ -3,10 +3,7 @@ package project.transferapi.presentation.account;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.web.bind.annotation.*;
-import project.transferapi.application.account.AccountCreateHandler;
-import project.transferapi.application.account.AccountVeiwHandler;
-import project.transferapi.application.account.AccountView;
-import project.transferapi.application.account.AccountViewDetail;
+import project.transferapi.application.account.*;
 import project.transferapi.domain.Creator;
 import project.transferapi.domain.Modifier;
 
@@ -35,7 +32,7 @@ public class AccountController {
     }
 
     /**
-     * 계좌 상제 조회
+     * 계좌 상세 조회
      * @param id 계좌 ID
      * @return AccountViewDetailResponse
      */
@@ -47,7 +44,8 @@ public class AccountController {
 
     /**
      * 계좌 생성
-     * @param request 계좌 등록 정보
+     * @param request 계좌 생성 정보
+     * @param creator 등록자
      */
     @PostMapping
     void createAccount(@RequestBody AccountCreateRequest request, Creator creator) {

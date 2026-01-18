@@ -1,6 +1,4 @@
-package project.transferapi.domain.account;
-
-import project.transferapi.domain.Code;
+package project.transferapi.domain;
 
 public enum BankCode implements Code {
     KB("004", "국민은행"),
