@@ -42,12 +42,14 @@ public class TransferCreateHandler {
             throw new TransferBadRequestException(BLOCKED_TRANSFER);
         }
         // 이체 저장
-        Transfer transfer = Transfer.of(command, repo);
+        Transfer transfer = Transfer.of(command, detectionResult, repo);
         repo.save(transfer);
 
-        // 이벤트 발행? 차단되지는 않았지만 탐지내역이 존재하는 경우 outbox 에 이벤트 저장
+        // 차단되지는 않았지만 탐지내역이 존재하는 경우 outbox 에 이벤트 저장
         if (!detectionResult.detections().isEmpty()) {
-            outboxCreateService.create(new TransferCreatedEvent(transfer));
+//            outboxCreateService.create(command);
+
+            outboxCreateService.create(command, detectionResult);
         }
     }
 }

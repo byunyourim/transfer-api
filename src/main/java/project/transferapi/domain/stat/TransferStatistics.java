@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import project.transferapi.domain.account.AccountId;
-import project.transferapi.domain.transfer.TransferId;
 
 @Entity
 @Table( name = "TB_TRANSFER_STATISTICS" )
@@ -32,9 +31,11 @@ public class TransferStatistics {
 
     // 작업중
     public static TransferStatistics of() {
-        TransferStatistics stat = new TransferStatistics();
-        stat.id = TransferStatisticsId.of(0L);
+        TransferStatistics statistics = new TransferStatistics();
+        statistics.id = TransferStatisticsId.of(0L);
+
+
         
-        return stat;
+        return statistics;
     }
 }

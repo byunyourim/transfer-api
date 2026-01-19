@@ -54,6 +54,7 @@ public class TransferOutbox {
         event.payload = payload;
         event.status = PENDING;
         event.createdAt = LocalDateTime.now();
+        event.eventType = eventType;
         event.publishedAt = null;
         event.retryCount = 0;
 

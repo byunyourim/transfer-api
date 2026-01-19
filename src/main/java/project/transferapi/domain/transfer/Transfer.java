@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import project.transferapi.application.fraud.FraudDetectionResult;
 import project.transferapi.application.transfer.TransferCommand;
 import project.transferapi.domain.DomainEventPublish;
 import project.transferapi.domain.account.AccountId;
@@ -42,7 +43,7 @@ public class Transfer {
      * @param repo 이체 repository
      * @return Transfer
      */
-    public static Transfer of(TransferCommand command, TransferRepository repo) {
+    public static Transfer of(TransferCommand command, FraudDetectionResult detectionResult, TransferRepository repo) {
         Transfer transfer = new Transfer();
         transfer.id = repo.nextId();
         transfer.fromAccountId = command.fromAccountId();
@@ -52,7 +53,7 @@ public class Transfer {
         transfer.status = command.status();
         transfer.requestedAt = LocalDateTime.now();
         // 이벤트 발행
-        DomainEventPublish.publish(new TransferCreatedEvent(transfer));
+        DomainEventPublish.publish(new TransferCreatedEvent(command, detectionResult));
 
         return transfer;
     }

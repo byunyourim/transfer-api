@@ -2,6 +2,8 @@ package project.transferapi.domain.outbox;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import project.transferapi.application.fraud.FraudDetectionResult;
+import project.transferapi.application.transfer.TransferCommand;
 import project.transferapi.domain.transfer.TransferEventType;
 import tools.jackson.databind.ObjectMapper;
 
@@ -24,5 +26,16 @@ public class TransferOutboxCreateService {
         } catch (Exception e) {
             throw new RuntimeException("Failed to serialize event", e);
         }
+    }
+
+    /**
+     * transfer Outbox 생성
+     * @param command command 정보
+     * @param detectionResult 탐지 결과
+     */
+    public void create(TransferCommand command, FraudDetectionResult detectionResult) {
+        String payload = objectMapper.writeValueAsString(command);
+        TransferOutbox outbox = TransferOutbox.of(command.transferId(), TransferEventType.REQUESTED, payload);
+        repository.save(outbox);
     }
 }

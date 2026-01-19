@@ -38,4 +38,10 @@ public class FraudActionHistory {
     private SeverityType severityType;
     /* 탐지상태 유형 */
     private DetectionStatusType detectionStatusType;
+
+    public static FraudActionHistory of() {
+        FraudActionHistory fraudActionHistory = new FraudActionHistory();
+
+        return fraudActionHistory;
+    }
 }

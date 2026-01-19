@@ -1,5 +1,7 @@
 package project.transferapi.domain.outbox;
 
+import project.transferapi.application.fraud.FraudDetectionResult;
+import project.transferapi.application.transfer.TransferCommand;
 import project.transferapi.domain.account.AccountId;
 import project.transferapi.domain.transfer.Transfer;
 import project.transferapi.domain.transfer.TransferId;
@@ -24,8 +26,8 @@ public record TransferCreatedEvent(
         /* 이체 요청 일자 */
         LocalDateTime requestedAt
 ) {
-    public TransferCreatedEvent(Transfer transfer) {
-        this(transfer.getId(), transfer.getFromAccountId(), transfer.getToAccountId(), 
-             transfer.getAmount(), transfer.getType(), transfer.getStatus(), transfer.getRequestedAt());        
+    public TransferCreatedEvent(TransferCommand command, FraudDetectionResult result) {
+        this(command.transferId(), command.fromAccountId(), command.toAccountId(),
+             command.amount(), command.type(), command.status(), command.requestedAt());
     }
 }

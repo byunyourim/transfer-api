@@ -9,10 +9,10 @@ import project.transferapi.domain.transfer.TransferType;
 import java.time.LocalDateTime;
 
 public record TransferCommand(
-        /* 출금계좌 ID */
-        AccountId fromAccountId,
         /* 이체 ID */
         TransferId transferId,
+        /* 출금계좌 ID */
+        AccountId fromAccountId,
         /* 입금계좌 ID */
         AccountId toAccountId,
         /* 이체 금액 */
