@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class FraudDetectionHistoryCreateService {
-    private final FraudDetectionHistoryRepository repo;
+    private final FraudDetectionHistoryRepository repository;
 
     /**
      * 탐지 이력 생성
@@ -19,6 +19,6 @@ public class FraudDetectionHistoryCreateService {
      * @param detections 이상 탐지 목록
      */
     public void create(TransferCommand command, List<FraudDetection> detections) {
-        TransferStatusHistory.of(command, detections, repo);
+        TransferStatusHistory.of(command, detections, repository);
     }
 }

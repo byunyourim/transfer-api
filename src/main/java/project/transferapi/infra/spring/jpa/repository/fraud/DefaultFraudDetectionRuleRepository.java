@@ -1,4 +1,4 @@
-package project.transferapi.infra.fraud;
+package project.transferapi.infra.spring.jpa.repository.fraud;
 
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.JPQLQueryFactory;
@@ -16,13 +16,13 @@ import java.util.UUID;
 public class DefaultFraudDetectionRuleRepository implements FraudDetectionRuleRepository {
     private final JPQLQueryFactory queryFactory;
 
-    private final FraudDetectionRuleJPARepository repo;
+    private final FraudDetectionRuleJPARepository repository;
 
     private final QFraudDetectionRule rule = QFraudDetectionRule.fraudDetectionRule;
 
     @Override
     public Optional<FraudDetectionRule> findById(FraudDetectionRuleId id) {
-        return repo.findById(id);
+        return repository.findById(id);
     }
 
     /**
@@ -37,7 +37,7 @@ public class DefaultFraudDetectionRuleRepository implements FraudDetectionRuleRe
 
     @Override
     public List<FraudDetectionRule> findAllByEnabledTrue() {
-        return repo.findAllByEnabledTrue();
+        return repository.findAllByEnabledTrue();
     }
 
     /**
@@ -54,7 +54,7 @@ public class DefaultFraudDetectionRuleRepository implements FraudDetectionRuleRe
 
     @Override
     public FraudDetectionRule save(FraudDetectionRule rule) {
-        return repo.save(rule);
+        return repository.save(rule);
     }
 
     @Override

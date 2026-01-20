@@ -9,7 +9,7 @@ import static project.transferapi.application.ErrorStatus.ACCOUNT_NOT_FOUND;
 @Service
 @RequiredArgsConstructor
 public class AccountValidationService {
-    private final AccountRepository repo;
+    private final AccountRepository repository;
 
     /**
      * 계좌 유무 검증
@@ -17,7 +17,7 @@ public class AccountValidationService {
      */
     public void validAccountInfo(AccountId... accountIds) {
         for (AccountId accountId : accountIds) {
-            long count = repo.accountById(accountId);
+            long count = repository.accountById(accountId);
             if (count > 0) {
                 throw new TransferBadRequestException(ACCOUNT_NOT_FOUND);
             }

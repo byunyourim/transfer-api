@@ -1,4 +1,4 @@
-package project.transferapi.infra.event;
+package project.transferapi.infra.spring.jpa.repository.event;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

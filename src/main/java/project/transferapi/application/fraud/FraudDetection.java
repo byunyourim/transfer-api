@@ -16,8 +16,3 @@ public record FraudDetection(
         SeverityType severityType
 ) {
 }
-
-
-
-
-

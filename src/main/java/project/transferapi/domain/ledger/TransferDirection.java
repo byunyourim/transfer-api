@@ -3,8 +3,8 @@ package project.transferapi.domain.ledger;
 import project.transferapi.domain.Code;
 
 public enum TransferDirection implements Code {
-    IN("TD01", "입금"),
-    OUT("TD02", "출금");
+    DEPOSIT("TD01", "입금"),
+    WITHDRAW("TD02", "출금");
 
     private final String code;
     private final String name;

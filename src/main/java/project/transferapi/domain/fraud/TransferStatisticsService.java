@@ -7,7 +7,7 @@ import project.transferapi.domain.account.AccountId;
 @Service
 @RequiredArgsConstructor
 public class TransferStatisticsService {
-    private final TransferStatisticsRepository repo;
+    private final TransferStatisticsRepository repository;
 
     /**
      * 출금계좌의 당일 이체금액 조회
@@ -15,6 +15,6 @@ public class TransferStatisticsService {
      * @return long
      */
     public long getTotalAmount(AccountId accountId) {
-        return repo.findTotalAmountById(accountId);
+        return repository.findTotalAmountById(accountId);
     }
 }

@@ -1,5 +1,6 @@
 package project.transferapi.domain.transfer;
 
+import jakarta.persistence.Embedded;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -9,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import project.transferapi.application.fraud.FraudDetectionResult;
 import project.transferapi.application.transfer.TransferCommand;
+import project.transferapi.domain.Creator;
 import project.transferapi.domain.DomainEventPublish;
 import project.transferapi.domain.account.AccountId;
 import project.transferapi.domain.outbox.TransferCreatedEvent;
@@ -36,6 +38,9 @@ public class Transfer {
     private TransferStatus status;
     /* 요청일시 */
     private LocalDateTime requestedAt;
+    /* 생성자 */
+    @Embedded
+    private Creator creator;
 
     /**
      * 이체 생성
@@ -51,9 +56,12 @@ public class Transfer {
         transfer.amount = command.amount();
         transfer.type = command.type();
         transfer.status = command.status();
-        transfer.requestedAt = LocalDateTime.now();
+        transfer.requestedAt = command.requestedAt();
+        transfer.creator = command.creator();
+
         // 이벤트 발행
-        DomainEventPublish.publish(new TransferCreatedEvent(command, detectionResult));
+        DomainEventPublish.publish(new TransferCreatedEvent(command.transferId(), command.fromAccountId(), command.toAccountId(), command.amount(),
+                                                            command.type(), command.status(), command.requestedAt(), detectionResult));
 
         return transfer;
     }

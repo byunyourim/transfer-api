@@ -9,14 +9,14 @@ import static project.transferapi.application.ErrorStatus.USER_NOT_FOUND;
 @Service
 @RequiredArgsConstructor
 public class UserValidationService {
-    private final UserRepository repo;
+    private final UserRepository repository;
 
     /**
      * 회원 유무 검증
      * @param id 회원 ID
      */
     public void validUser(UserId id) {
-        long count = repo.countById(id);
+        long count = repository.countById(id);
         if (count < 1) {
             throw new UserBadRequestException(USER_NOT_FOUND);
         }

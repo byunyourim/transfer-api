@@ -13,8 +13,6 @@ import static project.transferapi.application.ErrorStatus.*;
 @Service
 @RequiredArgsConstructor
 public class TransferValidationService {
-    private final TransferRepository repo;
-
     private final AccountRepository accountRepository;
 
     /**

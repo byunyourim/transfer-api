@@ -1,4 +1,4 @@
-package project.transferapi.infra.fraud;
+package project.transferapi.infra.spring.jpa.repository.fraud;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import project.transferapi.domain.fraud.rule.FraudDetectionRule;

@@ -3,7 +3,6 @@ package project.transferapi.domain.outbox;
 import project.transferapi.application.fraud.FraudDetectionResult;
 import project.transferapi.application.transfer.TransferCommand;
 import project.transferapi.domain.account.AccountId;
-import project.transferapi.domain.transfer.Transfer;
 import project.transferapi.domain.transfer.TransferId;
 import project.transferapi.domain.transfer.TransferStatus;
 import project.transferapi.domain.transfer.TransferType;
@@ -24,10 +23,17 @@ public record TransferCreatedEvent(
         /* 이체 상태 */
         TransferStatus status,
         /* 이체 요청 일자 */
-        LocalDateTime requestedAt
+        LocalDateTime requestedAt,
+        /* 이상 탐지 결과 */
+        FraudDetectionResult result
 ) {
+    public TransferCreatedEvent(TransferCommand command) {
+        this(command.transferId(), command.fromAccountId(), command.toAccountId(),
+             command.amount(), command.type(), command.status(), command.requestedAt(), null);
+    }
+
     public TransferCreatedEvent(TransferCommand command, FraudDetectionResult result) {
         this(command.transferId(), command.fromAccountId(), command.toAccountId(),
-             command.amount(), command.type(), command.status(), command.requestedAt());
+             command.amount(), command.type(), command.status(), command.requestedAt(), result);
     }
 }

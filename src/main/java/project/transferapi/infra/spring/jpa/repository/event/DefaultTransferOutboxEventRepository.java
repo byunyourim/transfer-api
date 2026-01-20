@@ -1,4 +1,4 @@
-package project.transferapi.infra.event;
+package project.transferapi.infra.spring.jpa.repository.event;
 
 import com.querydsl.jpa.JPQLQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -11,10 +11,10 @@ import project.transferapi.domain.outbox.TransferOutboxRepository;
 public class DefaultTransferOutboxEventRepository implements TransferOutboxRepository {
     private final JPQLQueryFactory queryFactory;
 
-    private final TransferOutboxEventJPARepository repo;
+    private final TransferOutboxEventJPARepository repository;
 
     @Override
     public TransferOutbox save(TransferOutbox event) {
-        return repo.save(event);
+        return repository.save(event);
     }
 }

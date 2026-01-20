@@ -11,6 +11,7 @@ import tools.jackson.databind.ObjectMapper;
 @RequiredArgsConstructor
 public class TransferOutboxCreateService {
     private final TransferOutboxRepository repository;
+
     private final ObjectMapper objectMapper;
 
     /**

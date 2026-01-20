@@ -1,4 +1,4 @@
-package project.transferapi.infra.account;
+package project.transferapi.infra.spring.jpa.repository.account;
 
 import com.querydsl.core.ResultTransformer;
 import com.querydsl.core.types.ConstructorExpression;
@@ -27,7 +27,7 @@ import static com.querydsl.core.types.Projections.constructor;
 public class DefaultAccountRepository implements AccountRepository {
     private final JPQLQueryFactory queryFactory;
 
-    private final AccountJPARepository repo;
+    private final AccountJPARepository repository;
 
     private final QAccount account = QAccount.account;
     /**
@@ -36,7 +36,7 @@ public class DefaultAccountRepository implements AccountRepository {
      */
     @Override
     public AccountId nextId() {
-        return AccountId.of( repo.nextId(DateUtil.nowSequenceDateTimeString()) );
+        return AccountId.of( repository.nextId(DateUtil.nowSequenceDateTimeString()) );
     }
 
     /**

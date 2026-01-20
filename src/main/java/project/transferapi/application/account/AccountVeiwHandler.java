@@ -10,14 +10,14 @@ import project.transferapi.presentation.account.AccountCreateResponse;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class AccountVeiwHandler {
-    private final AccountRepository repo;
+    private final AccountRepository repository;
 
     public AccountView findAccounts(AccountQuery query) {
-        return repo.findAccountView(query);
+        return repository.findAccountView(query);
 
     }
 
     public AccountViewDetail findAccount(AccountQuery query) {
-        return repo.findAccountDetailById(query.id());
+        return repository.findAccountDetailById(query.id());
     }
 }
